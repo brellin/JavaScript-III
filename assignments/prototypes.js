@@ -147,10 +147,14 @@ function Villain(atts) {
 // Villain Methods
 Villain.prototype = Object.create(Humanoid.prototype);
 Villain.prototype.evilSmite = function (enemy) {
-  return `${this.name} bonks ${enemy.name} with his ${this.weapons[1]}. ${enemy.name} has ${enemy.healthPoints - 3} HP left!`;
+  let damage = 3;
+  enemy.healthPoints = enemy.healthPoints - damage;
+  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} bonks ${enemy.name} with his ${this.weapons[1]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
 }
 Villain.prototype.deathRay = function (enemy) {
-  return `${this.name} blasts ${enemy.name} with his ${this.weapons[0]}. ${enemy.name} has ${enemy.healthPoints - 5} HP left!`;
+  let damage = 5;
+  enemy.healthPoints = enemy.healthPoints - damage;
+  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} blasts ${enemy.name} with his ${this.weapons[0]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
 }
 
 // Hero Constructor
@@ -160,14 +164,18 @@ function Hero(atts) {
 // Hero Methods
 Hero.prototype = Object.create(Humanoid.prototype);
 Hero.prototype.mightySlash = function (enemy) {
-  return `${this.name} slashes ${enemy.name} with his ${this.weapons[0]}. ${enemy.name} has ${enemy.healthPoints - 5} HP left!`;
+  let damage = 5;
+  enemy.healthPoints = enemy.healthPoints - damage;
+  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} slashes ${enemy.name} with his ${this.weapons[0]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
 }
 Hero.prototype.secondarySlash = function (enemy) {
-  return `${this.name} slashes ${enemy.name} with his ${this.weapons[1]}. ${enemy.name} has ${enemy.healthPoints - 2} HP left!`;
+  let damage = 2;
+  enemy.healthPoints = enemy.healthPoints - damage;
+  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} slashes ${enemy.name} with his ${this.weapons[1]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
 }
 
 // Characters
-const darkdrar = new Villain({
+let darkdrar = new Villain({
   createdAt: new Date(),
   dimensions: {
     length: 2,
@@ -184,7 +192,7 @@ const darkdrar = new Villain({
   language: 'Jibberish',
 });
 
-const brellin = new Hero({
+let brellin = new Hero({
   createdAt: new Date(),
   dimensions: {
     length: 1,
@@ -202,4 +210,5 @@ const brellin = new Hero({
 });
 
 // Testing
-console.log(darkdrar.evilSmite(brellin), brellin.mightySlash(darkdrar), brellin.secondarySlash(darkdrar), darkdrar.deathRay(brellin))
+;
+console.log(brellin.mightySlash(darkdrar), darkdrar.deathRay(brellin), brellin.secondarySlash(darkdrar), darkdrar.evilSmite(brellin), brellin.secondarySlash(darkdrar), darkdrar.evilSmite(brellin), brellin.mightySlash(darkdrar));
