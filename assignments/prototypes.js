@@ -143,35 +143,49 @@ const archer = new Humanoid({
 // Villain Constructor
 function Villain(atts) {
   Humanoid.call(this, atts);
+  this.armorName = atts.armor[0];
+  this.armorRating = atts.armor[1];
 }
 // Villain Methods
 Villain.prototype = Object.create(Humanoid.prototype);
 Villain.prototype.evilSmite = function (enemy) {
-  let damage = 3;
+  let damage = 3 - enemy.armorRating;
   enemy.healthPoints = enemy.healthPoints - damage;
-  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} bonks ${enemy.name} with his ${this.weapons[1]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
+  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} point(s) of damage. ${enemy.destroy()}` : `${this.name} bonks ${enemy.name} with his ${this.weapons[1]} for ${damage} point(s) of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
 }
 Villain.prototype.deathRay = function (enemy) {
-  let damage = 5;
+  let damage = 5 - enemy.armorRating;
   enemy.healthPoints = enemy.healthPoints - damage;
-  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} blasts ${enemy.name} with his ${this.weapons[0]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
+  return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} point(s) of damage. ${enemy.destroy()}` : `${this.name} blasts ${enemy.name} with his ${this.weapons[0]} for ${damage} point(s) of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
+}
+Villain.prototype.heal = function () {
+  let healAmount = 2;
+  this.healthPoints = this.healthPoints + healAmount;
+  return `${this.name} healed ${healAmount} HP!`;
 }
 
 // Hero Constructor
 function Hero(atts) {
   Humanoid.call(this, atts);
+  this.armorName = atts.armor[0];
+  this.armorRating = atts.armor[1];
 }
 // Hero Methods
 Hero.prototype = Object.create(Humanoid.prototype);
 Hero.prototype.mightySlash = function (enemy) {
-  let damage = 5;
+  let damage = 5 - enemy.armorRating;
   enemy.healthPoints = enemy.healthPoints - damage;
   return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} slashes ${enemy.name} with his ${this.weapons[0]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
 }
 Hero.prototype.secondarySlash = function (enemy) {
-  let damage = 2;
+  let damage = 2 - enemy.armorRating;
   enemy.healthPoints = enemy.healthPoints - damage;
   return enemy.healthPoints <= 0 ? `${enemy.name} took ${damage} points of damage. ${enemy.destroy()}` : `${this.name} slashes ${enemy.name} with his ${this.weapons[1]} for ${damage} points of damage. ${enemy.name} has ${enemy.healthPoints} HP left!`;
+}
+Hero.prototype.heal = function () {
+  let healAmount = 2;
+  this.healthPoints = this.healthPoints + healAmount;
+  return `${this.name} healed ${healAmount} HP!`;
 }
 
 // Characters
@@ -190,6 +204,10 @@ let darkdrar = new Villain({
     'Staff',
   ],
   language: 'Jibberish',
+  armor: [
+    'Mage Garb',
+    1,
+  ]
 });
 
 let brellin = new Hero({
@@ -207,8 +225,12 @@ let brellin = new Hero({
     'Dagger',
   ],
   language: '日本語',
+  armor: [
+    'Plate Mail',
+    2,
+  ]
 });
 
 // Testing
-;
-console.log(brellin.mightySlash(darkdrar), darkdrar.deathRay(brellin), brellin.secondarySlash(darkdrar), darkdrar.evilSmite(brellin), brellin.secondarySlash(darkdrar), darkdrar.evilSmite(brellin), brellin.mightySlash(darkdrar));
+
+console.log(brellin.mightySlash(darkdrar), darkdrar.deathRay(brellin), darkdrar.heal(), brellin.secondarySlash(darkdrar), darkdrar.evilSmite(brellin), brellin.secondarySlash(darkdrar), darkdrar.evilSmite(brellin), brellin.mightySlash(darkdrar), darkdrar.deathRay(brellin), brellin.heal(), darkdrar.evilSmite(brellin), brellin.mightySlash(darkdrar));
